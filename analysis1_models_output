@@ -1,0 +1,622 @@
+> model_base <- glmer(looking_at_target ~ 1 + (1 | participant_ID), 
++                     data = eyetracking_data, family = binomial)
+> summary(model_base)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ 1 + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   772.8    781.6   -384.4    768.8      605 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-0.8251 -0.6889 -0.6473  1.2483  1.7571 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1082   0.3289  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -0.7131     0.1159  -6.153 7.59e-10 ***
+
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> 
+> # Model with stress
+> model_stress <- glmer(looking_at_target ~ stress + (1 | participant_ID), 
++                       data = eyetracking_data, family = binomial)
+
+> summary(model_stress)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   746.7    759.9   -370.4    740.7      604 
+
+Scaled residuals: 
+   Min     1Q Median     3Q    Max 
+-1.045 -0.741 -0.533  1.023  2.162 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1282   0.3581  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       -1.2222     0.1611  -7.585 3.33e-14 ***
+stressparoxytone   0.9423     0.1813   5.197 2.02e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr)
+strssprxytn -0.654
+> 
+> anova(model_base, model_stress)
+Data: eyetracking_data
+Models:
+model_base: looking_at_target ~ 1 + (1 | participant_ID)
+model_stress: looking_at_target ~ stress + (1 | participant_ID)
+             npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)    
+model_base      2 772.79 781.60 -384.39   768.79                         
+model_stress    3 746.71 759.94 -370.36   740.71 28.077  1  1.166e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+> # Model with stress and syllable structure
+> model_stress_syllable <- glmer(looking_at_target ~ stress + syllable_struct + (1 | participant_ID), 
++                                data = eyetracking_data, family = binomial)
+> 
+> summary(model_stress_syllable)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   748.2    765.9   -370.1    740.2      603 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.0810 -0.7208 -0.5190  1.0511  2.2201 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1283   0.3582  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)         -1.1530     0.1897  -6.079 1.21e-09 ***
+stressparoxytone     0.9404     0.1814   5.184 2.17e-07 ***
+syllable_structCVC  -0.1224     0.1796  -0.682    0.495    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp
+strssprxytn -0.561       
+syllbl_sCVC -0.527  0.010
+> 
+> anova(model_stress, model_stress_syllable)
+Data: eyetracking_data
+Models:
+model_stress: looking_at_target ~ stress + (1 | participant_ID)
+model_stress_syllable: looking_at_target ~ stress + syllable_struct + (1 | participant_ID)
+                      npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_stress             3 746.71 759.94 -370.36   740.71                     
+model_stress_syllable    4 748.25 765.88 -370.12   740.25 0.4637  1     0.4959
+> 
+> # Model with stress, syllable structure, and WM scores
+> model_stress_syllable_WM <- glmer(looking_at_target ~ stress + syllable_struct + WM_score + (1 | participant_ID), 
++                                   data = eyetracking_data, family = binomial)
+> summary(model_stress_syllable_WM)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + WM_score + (1 |      participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   749.3    771.3   -369.6    739.3      602 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1078 -0.7367 -0.5259  1.0489  2.1831 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1161   0.3407  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.52493    0.42475  -3.590  0.00033 ***
+stressparoxytone    0.94043    0.18141   5.184 2.17e-07 ***
+syllable_structCVC -0.12217    0.17959  -0.680  0.49632    
+WM_score            0.08301    0.08405   0.988  0.32336    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp sy_CVC
+strssprxytn -0.267              
+syllbl_sCVC -0.235  0.010       
+WM_score    -0.897  0.019  0.000
+> 
+> anova(model_stress_syllable, model_stress_syllable_WM)
+Data: eyetracking_data
+Models:
+model_stress_syllable: looking_at_target ~ stress + syllable_struct + (1 | participant_ID)
+model_stress_syllable_WM: looking_at_target ~ stress + syllable_struct + WM_score + (1 | participant_ID)
+                         npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_stress_syllable       4 748.25 765.88 -370.12   740.25                     
+model_stress_syllable_WM    5 749.29 771.33 -369.64   739.29 0.9616  1     0.3268
+> 
+> # Model with test phase
+> model_test_phase <- glmer(looking_at_target ~ stress + syllable_struct + WM_score + test_phase + (1 | participant_ID), 
++                     data = eyetracking_data, family = binomial)
+> summary(model_test_phase)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + WM_score + test_phase +      (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   751.0    777.4   -369.5    739.0      601 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1368 -0.7178 -0.5293  1.0467  2.2409 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1165   0.3413  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.47490    0.43359  -3.402  0.00067 ***
+stressparoxytone    0.94110    0.18148   5.186 2.15e-07 ***
+syllable_structCVC -0.12140    0.17965  -0.676  0.49922    
+WM_score            0.08309    0.08412   0.988  0.32332    
+test_phasepretest  -0.10306    0.17870  -0.577  0.56414    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp sy_CVC WM_scr
+strssprxytn -0.259                     
+syllbl_sCVC -0.230  0.011              
+WM_score    -0.879  0.019  0.000       
+tst_phsprts -0.197 -0.012 -0.007 -0.003
+> 
+> anova(model_stress_syllable_WM, model_test_phase)
+Data: eyetracking_data
+Models:
+model_stress_syllable_WM: looking_at_target ~ stress + syllable_struct + WM_score + (1 | participant_ID)
+model_test_phase: looking_at_target ~ stress + syllable_struct + WM_score + test_phase + (1 | participant_ID)
+                         npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_stress_syllable_WM    5 749.29 771.33 -369.64   739.29                     
+model_test_phase            6 750.95 777.40 -369.48   738.95 0.3325  1     0.5642
+> 
+> # Model with AvgAcc
+> model_avgacc <- glmer(looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + (1 | participant_ID), 
++                       data = eyetracking_data, family = binomial)
+> summary(model_avgacc)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + WM_score_scaled +      test_phase + AvgAcc_scaled + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   753.0    783.8   -369.5    739.0      600 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1365 -0.7164 -0.5307  1.0452  2.2378 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1165   0.3413  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.10327    0.20697  -5.331 9.79e-08 ***
+stressparoxytone    0.94112    0.18148   5.186 2.15e-07 ***
+syllable_structCVC -0.12140    0.17966  -0.676    0.499    
+WM_score_scaled     0.11886    0.12031   0.988    0.323    
+test_phasepretest  -0.10307    0.17871  -0.577    0.564    
+AvgAcc_scaled       0.00475    0.11888   0.040    0.968    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp sy_CVC WM_sc_ tst_ph
+strssprxytn -0.510                            
+syllbl_sCVC -0.481  0.011                     
+WM_scr_scld -0.023  0.019  0.000              
+tst_phsprts -0.416 -0.012 -0.007 -0.002       
+AvgAcc_scld -0.002 -0.001 -0.002  0.012  0.002
+> 
+> anova(model_full, model_avgacc)
+Error: object 'model_full' not found
+> anova(model_test_phase, model_avgacc)
+Data: eyetracking_data
+Models:
+model_test_phase: looking_at_target ~ stress + syllable_struct + WM_score + test_phase + (1 | participant_ID)
+model_avgacc: looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + (1 | participant_ID)
+                 npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_test_phase    6 750.95 777.40 -369.48   738.95                     
+model_avgacc        7 752.95 783.81 -369.48   738.95 0.0016  1     0.9681
+> # fit the GLMM models
+> 
+> # Base model with random intercept for participant
+> model_base <- glmer(looking_at_target ~ 1 + (1 | participant_ID), 
++                     data = eyetracking_data, family = binomial)
+> 
+> summary(model_base)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ 1 + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   772.8    781.6   -384.4    768.8      605 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-0.8251 -0.6889 -0.6473  1.2483  1.7571 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1082   0.3289  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -0.7131     0.1159  -6.153 7.59e-10 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> 
+> # Model with stress
+> model_stress <- glmer(looking_at_target ~ stress + (1 | participant_ID), 
++                       data = eyetracking_data, family = binomial)
+> 
+> summary(model_stress)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   746.7    759.9   -370.4    740.7      604 
+
+Scaled residuals: 
+   Min     1Q Median     3Q    Max 
+-1.045 -0.741 -0.533  1.023  2.162 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1282   0.3581  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       -1.2222     0.1611  -7.585 3.33e-14 ***
+stressparoxytone   0.9423     0.1813   5.197 2.02e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr)
+strssprxytn -0.654
+> 
+> anova(model_base, model_stress)
+Data: eyetracking_data
+Models:
+model_base: looking_at_target ~ 1 + (1 | participant_ID)
+model_stress: looking_at_target ~ stress + (1 | participant_ID)
+             npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)    
+model_base      2 772.79 781.60 -384.39   768.79                         
+model_stress    3 746.71 759.94 -370.36   740.71 28.077  1  1.166e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> 
+> # Model with stress and syllable structure
+> model_stress_syllable <- glmer(looking_at_target ~ stress + syllable_struct + (1 | participant_ID), 
++                                data = eyetracking_data, family = binomial)
+> 
+> summary(model_stress_syllable)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   748.2    765.9   -370.1    740.2      603 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.0810 -0.7208 -0.5190  1.0511  2.2201 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1283   0.3582  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)         -1.1530     0.1897  -6.079 1.21e-09 ***
+stressparoxytone     0.9404     0.1814   5.184 2.17e-07 ***
+syllable_structCVC  -0.1224     0.1796  -0.682    0.495    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp
+strssprxytn -0.561       
+syllbl_sCVC -0.527  0.010
+> 
+> anova(model_stress, model_stress_syllable)
+Data: eyetracking_data
+Models:
+model_stress: looking_at_target ~ stress + (1 | participant_ID)
+model_stress_syllable: looking_at_target ~ stress + syllable_struct + (1 | participant_ID)
+                      npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_stress             3 746.71 759.94 -370.36   740.71                     
+model_stress_syllable    4 748.25 765.88 -370.12   740.25 0.4637  1     0.4959
+> 
+> # Model with stress, syllable structure, and WM scores
+> model_stress_syllable_WM <- glmer(looking_at_target ~ stress + syllable_struct + WM_score + (1 | participant_ID), 
++                                   data = eyetracking_data, family = binomial)
+> summary(model_stress_syllable_WM)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + WM_score + (1 |      participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   749.3    771.3   -369.6    739.3      602 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1078 -0.7367 -0.5259  1.0489  2.1831 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1161   0.3407  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.52493    0.42475  -3.590  0.00033 ***
+stressparoxytone    0.94043    0.18141   5.184 2.17e-07 ***
+syllable_structCVC -0.12217    0.17959  -0.680  0.49632    
+WM_score            0.08301    0.08405   0.988  0.32336    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp sy_CVC
+strssprxytn -0.267              
+syllbl_sCVC -0.235  0.010       
+WM_score    -0.897  0.019  0.000
+> 
+> anova(model_stress_syllable, model_stress_syllable_WM)
+Data: eyetracking_data
+Models:
+model_stress_syllable: looking_at_target ~ stress + syllable_struct + (1 | participant_ID)
+model_stress_syllable_WM: looking_at_target ~ stress + syllable_struct + WM_score + (1 | participant_ID)
+                         npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_stress_syllable       4 748.25 765.88 -370.12   740.25                     
+model_stress_syllable_WM    5 749.29 771.33 -369.64   739.29 0.9616  1     0.3268
+> 
+> # Model with test phase
+> model_test_phase <- glmer(looking_at_target ~ stress + syllable_struct + WM_score + test_phase + (1 | participant_ID), 
++                     data = eyetracking_data, family = binomial)
+> summary(model_test_phase)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + WM_score + test_phase +      (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   751.0    777.4   -369.5    739.0      601 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1368 -0.7178 -0.5293  1.0467  2.2409 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1165   0.3413  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.47490    0.43359  -3.402  0.00067 ***
+stressparoxytone    0.94110    0.18148   5.186 2.15e-07 ***
+syllable_structCVC -0.12140    0.17965  -0.676  0.49922    
+WM_score            0.08309    0.08412   0.988  0.32332    
+test_phasepretest  -0.10306    0.17870  -0.577  0.56414    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp sy_CVC WM_scr
+strssprxytn -0.259                     
+syllbl_sCVC -0.230  0.011              
+WM_score    -0.879  0.019  0.000       
+tst_phsprts -0.197 -0.012 -0.007 -0.003
+> 
+> anova(model_stress_syllable_WM, model_test_phase)
+Data: eyetracking_data
+Models:
+model_stress_syllable_WM: looking_at_target ~ stress + syllable_struct + WM_score + (1 | participant_ID)
+model_test_phase: looking_at_target ~ stress + syllable_struct + WM_score + test_phase + (1 | participant_ID)
+                         npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_stress_syllable_WM    5 749.29 771.33 -369.64   739.29                     
+model_test_phase            6 750.95 777.40 -369.48   738.95 0.3325  1     0.5642
+> 
+> # Model with AvgAcc
+> model_avgacc <- glmer(looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + (1 | participant_ID), 
++                       data = eyetracking_data, family = binomial)
+> summary(model_avgacc)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + WM_score_scaled +      test_phase + AvgAcc_scaled + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   753.0    783.8   -369.5    739.0      600 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1365 -0.7164 -0.5307  1.0452  2.2378 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1165   0.3413  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.10327    0.20697  -5.331 9.79e-08 ***
+stressparoxytone    0.94112    0.18148   5.186 2.15e-07 ***
+syllable_structCVC -0.12140    0.17966  -0.676    0.499    
+WM_score_scaled     0.11886    0.12031   0.988    0.323    
+test_phasepretest  -0.10307    0.17871  -0.577    0.564    
+AvgAcc_scaled       0.00475    0.11888   0.040    0.968    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp sy_CVC WM_sc_ tst_ph
+strssprxytn -0.510                            
+syllbl_sCVC -0.481  0.011                     
+WM_scr_scld -0.023  0.019  0.000              
+tst_phsprts -0.416 -0.012 -0.007 -0.002       
+AvgAcc_scld -0.002 -0.001 -0.002  0.012  0.002
+> 
+> anova(model_test_phase, model_avgacc)
+Data: eyetracking_data
+Models:
+model_test_phase: looking_at_target ~ stress + syllable_struct + WM_score + test_phase + (1 | participant_ID)
+model_avgacc: looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + (1 | participant_ID)
+                 npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_test_phase    6 750.95 777.40 -369.48   738.95                     
+model_avgacc        7 752.95 783.81 -369.48   738.95 0.0016  1     0.9681
+> 
+> # Model with AvgRT_MS
+> model_avgrt <- glmer(looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + AvgRT_MS_scaled + (1 | participant_ID), 
++                      data = eyetracking_data, family = binomial)
+> summary(model_avgrt)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + WM_score_scaled +  
+    test_phase + AvgAcc_scaled + AvgRT_MS_scaled + (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   754.9    790.1   -369.4    738.9      599 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1405 -0.7140 -0.5289  1.0487  2.2434 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1153   0.3395  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.103353   0.206819  -5.335 9.56e-08 ***
+stressparoxytone    0.941217   0.181479   5.186 2.14e-07 ***
+syllable_structCVC -0.121207   0.179658  -0.675    0.500    
+WM_score_scaled     0.113366   0.121781   0.931    0.352    
+test_phasepretest  -0.103183   0.178706  -0.577    0.564    
+AvgAcc_scaled       0.003195   0.118684   0.027    0.979    
+AvgRT_MS_scaled     0.032424   0.120120   0.270    0.787    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp sy_CVC WM_sc_ tst_ph AvgAc_
+strssprxytn -0.510                                   
+syllbl_sCVC -0.481  0.011                            
+WM_scr_scld -0.022  0.017 -0.001                     
+tst_phsprts -0.417 -0.012 -0.007 -0.002              
+AvgAcc_scld -0.002 -0.001 -0.002  0.020  0.002       
+AvgRT_MS_sc -0.007  0.007  0.004 -0.166 -0.003 -0.047
+> 
+> anova(model_avgacc, model_avgrt)
+Data: eyetracking_data
+Models:
+model_avgacc: looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + (1 | participant_ID)
+model_avgrt: looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + AvgRT_MS_scaled + (1 | participant_ID)
+             npar    AIC    BIC  logLik deviance  Chisq Df Pr(>Chisq)
+model_avgacc    7 752.95 783.81 -369.48   738.95                     
+model_avgrt     8 754.88 790.15 -369.44   738.88 0.0726  1     0.7876
+> 
+> # Model with SumTrials
+> model_sumtrials <- glmer(looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + AvgRT_MS_scaled + SumTrials_scaled + (1 | participant_ID), 
++                          data = eyetracking_data, family = binomial)
+> summary(model_sumtrials)
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: looking_at_target ~ stress + syllable_struct + WM_score_scaled +  
+    test_phase + AvgAcc_scaled + AvgRT_MS_scaled + SumTrials_scaled +      (1 | participant_ID)
+   Data: eyetracking_data
+
+     AIC      BIC   logLik deviance df.resid 
+   756.9    796.6   -369.4    738.9      598 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.1409 -0.7141 -0.5290  1.0486  2.2430 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_ID (Intercept) 0.1152   0.3395  
+Number of obs: 607, groups:  participant_ID, 19
+
+Fixed effects:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.103354   0.206814  -5.335 9.55e-08 ***
+stressparoxytone    0.941213   0.181478   5.186 2.14e-07 ***
+syllable_structCVC -0.121196   0.179658  -0.675    0.500    
+WM_score_scaled     0.113644   0.122070   0.931    0.352    
+test_phasepretest  -0.103205   0.178705  -0.578    0.564    
+AvgAcc_scaled       0.002755   0.119490   0.023    0.982    
+AvgRT_MS_scaled     0.031838   0.121501   0.262    0.793    
+SumTrials_scaled   -0.003814   0.120450  -0.032    0.975    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) strssp sy_CVC WM_sc_ tst_ph AvgAc_ ART_MS
+strssprxytn -0.510                                          
+syllbl_sCVC -0.481  0.011                                   
+WM_scr_scld -0.022  0.017 -0.001                            
+tst_phsprts -0.417 -0.012 -0.007 -0.002                     
+AvgAcc_scld -0.002 -0.001 -0.002  0.012  0.002              
+AvgRT_MS_sc -0.007  0.007  0.003 -0.174 -0.003 -0.029       
+SmTrls_scld  0.000 -0.001  0.000 -0.070  0.000  0.117  0.151
+> 
+> anova(model_avgrt, model_sumtrials)
+Data: eyetracking_data
+Models:
+model_avgrt: looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + AvgRT_MS_scaled + (1 | participant_ID)
+model_sumtrials: looking_at_target ~ stress + syllable_struct + WM_score_scaled + test_phase + AvgAcc_scaled + AvgRT_MS_scaled + SumTrials_scaled + (1 | participant_ID)
+                npar    AIC    BIC  logLik deviance Chisq Df Pr(>Chisq)
+model_avgrt        8 754.88 790.15 -369.44   738.88                    
+model_sumtrials    9 756.88 796.55 -369.44   738.88 0.001  1     0.9748
