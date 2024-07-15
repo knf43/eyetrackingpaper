@@ -1,3 +1,26 @@
+GLMMs
+
+Independent Variables
+Stress: A categorical variable indicating the stress pattern of the target word (e.g., paroxytone vs. oxytone).
+Syllable Structure: A categorical variable indicating the syllable structure of the target word (e.g., CVC vs. CV).
+WM Score: A continuous variable representing the working memory scores of participants.
+Test Phase: A categorical variable indicating whether the data was collected during the pretest or posttest phase.
+AvgAcc: A continuous variable representing the average accuracy of participants in the dinosaur game.
+AvgRT_MS: A continuous variable representing the average reaction time in milliseconds in the dinosaur game.
+SumTrials: A continuous variable representing the total number of trials completed by the participants in the dinosaur game.
+
+Dependent Variable
+Looking at Target: A binary outcome variable indicating whether the participant was looking at the target (1 = yes, 0 = no) in the 10 ms bin 200 ms after the offset of the first syllable of the target word
+
+Random effects
+By subject 
+
+SUMMARY RESULTS: 
+The GlMM was the best fit when including the random effects (R2m = 0.061, R2c = 0.096). 
+There was a significant main effect of stress (𝒳²(1) = 28.077, p < .001), with paroxytone stress increasing the log odds of looking at the target (Estimate = 0.9423, SE = 0.1813, z = 5.197, p < .001). 
+The fit indices were AIC = 746.7, BIC = 759.9, logLik = -370.4, deviance = 740.7.
+No other predictors were significant. 
+
 > model_base <- glmer(looking_at_target ~ 1 + (1 | participant_ID), 
 +                     data = eyetracking_data, family = binomial)
 > summary(model_base)
